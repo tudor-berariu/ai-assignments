@@ -1,12 +1,13 @@
 \documentclass[12pt]{article}
 
-\usepackage{xcolor}
+\usepackage[usenames,dvipsnames]{xcolor}
 \usepackage[romanian]{babel}
 \usepackage{graphicx}
 \usepackage{import}
 \usepackage[utf8x]{inputenc}
 \usepackage{multicol}
 \usepackage{amsmath}
+\usepackage{framed}
 %%\usepackage{showlabels}
 
 \title{Inferențe în Rețele Bayesiene}
@@ -16,14 +17,17 @@
 
 \maketitle
 
-\subsection*{1. Mai multe cauze ale aceluiași eveniment}
+\section{Mai multe cauze ale aceluiași eveniment}
 \label{mc}
 
-\subsubsection*{Trei cauze}
+\subsection{Trei cauze}
 \label{sec:trei}
 
+\subsubsection*{Problema}
+\label{prob1}
+
 Fie rețeaua bayesiană din figura de mai jos. Aceasta este
-descrisă de următorii parametri:
+descrisă de următorii [$1 + 1 + 1 + 2^3 = 11$] parametri:
 \begin{multicols}{2}
   \begin{eqnarray*}
     & & P(A_1) \\
@@ -40,47 +44,131 @@ descrisă de următorii parametri:
   \import{graphics/}{bayes1.pdf_tex}
 \end{multicols}
 
-\paragraph{Problema}
-
 Să prespupunem că dorim să calculăm $P(A_1 \vert B)$.
+
+\subsubsection*{Primul pas}
+\label{step1}
 
 Conform Teoremei lui Bayes:
 \begin{equation}
   \label{eq:1}
-  P(A_1 \vert B) = \dfrac{P(B \vert A_1) \cdot P(A_1)}{P(B)}
+  P(A_1 \vert B) = \dfrac{{\color{OliveGreen} P(B \vert A_1)} \cdot P(A_1)}{{\color{DarkOrchid}P(B)}}
 \end{equation}
-În Ecuația~\ref{eq:1} avem două cantități necunoscute: $P(B \vert
-A_1)$ și $P(B)$.
+În Ecuația~\ref{eq:1} avem două cantități necunoscute: ${\color{OliveGreen} P(B \vert A_1)}$ și ${\color{DarkOrchid}P(B)}$.
 
-Aplicând formula probailităților totale:
+\subsubsection*{Calculul lui ${\color{OliveGreen}P(B \vert A_1)}$}
+\label{step2}
+
+Putem introduce o variabilă nouă, aplicând formula probailităților
+totale.
+
+\begin{framed}
+  \begin{equation*}
+    P(X) = \displaystyle\sum_{y}P(X \vert Y=y) \cdot P(Y=y)
+  \end{equation*}
+  Pentru evenimente binare:
+  \begin{equation*}
+    P(X) = P(X \vert Y) \cdot P(Y) + P(X \vert \neg Y) \cdot P(\neg Y)
+  \end{equation*}
+\end{framed}
+
+
+ O introducem pe $A_2$:
 \begin{equation}
   \label{eq:2}
-  P(B \vert A_1) = P(B \vert A_1, A_2) \cdot P(A_2 \vert A_1) + P(B \vert A_1, \neg A_2) \cdot P(\neg A_2 \vert A_1)
+  {\color{OliveGreen} P(B \vert A_1)} = P(B \vert A_1, A_2) \cdot P(A_2 \vert A_1) + P(B \vert A_1, \neg A_2) \cdot P(\neg A_2 \vert A_1)
 \end{equation}
 
 Dar, cum [fără a fi $B$ observat] $A_1$ și $A_2$ sunt condițional
 independente, $P(A_2 \vert A_1) = P(A_2)$ și $P(\neg A_2 \vert A_1) =
-P(\neg A_2)$, iar Ecuația\ref{eq:2} devine:
+P(\neg A_2)$, iar Ecuația~\ref{eq:2} devine:
 \begin{equation}
   \label{eq:3}
-  P(B \vert A_1) = P(B \vert A_1, A_2) \cdot P(A_2) + P(B \vert A_1, \neg A_2) \cdot P(\neg A_2)
+  {\color{OliveGreen} P(B \vert A_1)} = P(B \vert A_1, A_2) \cdot P(A_2) + P(B \vert A_1, \neg A_2) \cdot P(\neg A_2)
 \end{equation}
 
-Aplicând din nou formula probabilităților totale pentru a factoriza după $A_3$:
+Aplicând din nou formula probabilităților totale pentru a factoriza
+după $A_3$:
 
 \begin{eqnarray*}
   \label{eq:4}
-  P(B \vert A_1) & = & P(B \vert A_1, A_2) \cdot P(A_2) + P(B \vert A_1, \neg A_2) \cdot P(\neg A_2) \\
-  P(B \vert A_1) & = & \big( P(B \vert A_1, A_2, A_3) \cdot P(A_3 \vert A_1, A_2) + \\
+  {\color{OliveGreen} P(B \vert A_1)} & = & {\color{red} P(B \vert A_1, A_2)} \cdot P(A_2) + {\color{blue} P(B \vert A_1, \neg A_2)} \cdot P(\neg A_2) \\
+  {\color{OliveGreen} P(B \vert A_1)} & = & \big( {\color{red} P(B \vert A_1, A_2, A_3) \cdot P(A_3 \vert A_1, A_2) + }\\
   & & 
-  \quad P(B \vert A_1, A_2, \neg A_3) \cdot P(\neg A_3 \vert A_1, A_2) \big) \cdot P(A_2) + \\
-  &  & \big( P(B \vert A_1, \neg A_2, A_3) \cdot P(A_3 \vert A_1, \neg A_2) + \\
-  & & \quad P(B \vert A_1, \neg A_2, \neg A_3) \cdot P(\neg A_3 \vert A_1, \neg A_2) \big) \cdot P(\neg A_2)
+  {\color{red} \quad P(B \vert A_1, A_2, \neg A_3) \cdot P(\neg A_3 \vert A_1, A_2)} \big) \cdot P(A_2) + \\
+  &  & \big( {\color{blue} P(B \vert A_1, \neg A_2, A_3) \cdot P(A_3 \vert A_1, \neg A_2) + }\\
+  & & {\color{blue}\quad P(B \vert A_1, \neg A_2, \neg A_3) \cdot P(\neg A_3 \vert A_1, \neg A_2)} \big) \cdot P(\neg A_2)
 \end{eqnarray*}
 
-\subsubsection*{$N$ cauze}
-\label{sec:n}
+Dar, aplicând același raționament ca înainte, $A_3$ este condițional
+independent de $A_1$ și $A_2$ atunci când $B$ nu este observat și
+atunci:
+\begin{itemize}
+\item $P(A_3 \vert A_1, A_2) = P(A_3)$
+\item $P(\neg A_3 \vert A_1, A_2) = P(\neg A_3)$
+\item $P(A_3 \vert A_1, \neg A_2) = P(A_3)$
+\item $P(\neg A_3 \vert A_1, \neg A_2) = P(\neg A_3)$
+\end{itemize}
+
+și atunci rescriem ecuația anterioară:
+
+\begin{eqnarray*}
+  \label{eq:5}
+  {\color{OliveGreen} P(B \vert A_1)} & = & \big( {\color{red} P(B \vert A_1, A_2, A_3) \cdot P(A_3) + }\\
+  & & 
+  {\color{red} \quad P(B \vert A_1, A_2, \neg A_3) \cdot P(\neg A_3)} \big) \cdot P(A_2) + \\
+  &  & \big( {\color{blue} P(B \vert A_1, \neg A_2, A_3) \cdot P(A_3) + }\\
+  & & {\color{blue}\quad P(B \vert A_1, \neg A_2, \neg A_3) \cdot P(\neg A_3)} \big) \cdot P(\neg A_2) \\
+  & = & P(B \vert A_1, A_2, A_3) \cdot P(A_2) \cdot P(A_3) + \\
+  &  & P(B \vert A_1, A_2, \neg A_3) \cdot P(A_2) \cdot P(\neg A_3) + \\
+  &  & P(B \vert A_1, \neg A_2, A_3) \cdot P(\neg A_2) \cdot P(A_3) + \\
+  &  & P(B \vert A_1, \neg A_2, \neg A_3) \cdot P(\neg A_2) \cdot P(\neg A_3)
+\end{eqnarray*}
+
+Înlocuind ultimul rezultat în Ecuația~\ref{eq:2}:
+
+\begin{eqnarray*}
+  P(A_1 | B)   & = & \Bigg(P(B \vert A_1, A_2, A_3) \cdot P(A_2) \cdot P(A_3) + \\
+  &  & P(B \vert A_1, A_2, \neg A_3) \cdot P(A_2) \cdot P(\neg A_3) + \\
+  &  & P(B \vert A_1, \neg A_2, A_3) \cdot P(\neg A_2) \cdot P(A_3) + \\
+  &  & P(B \vert A_1, \neg A_2, \neg A_3) \cdot P(\neg A_2) \cdot P(\neg A_3)\Bigg) \cdot \dfrac{P(A_1)}{{\color{DarkOrchid}P(B)}}
+\end{eqnarray*}
 
 
+\subsubsection*{${\color{DarkOrchid}P(B)}$ este necunoscut}
+\label{sec:step3}
+
+Mai rămâne o problemă: calculul lui
+${\color{DarkOrchid}P(B)}$. Folosind aceeași strategie de mai sus
+intuim că ${\color{DarkOrchid}P(B)}$ s-ar exprima printr-o sumă de 8
+termeni de tipul $P(B \vert A_1, A_2, A_3) \cdot P(A_1) \cdot P(A_2)
+\cdot P(A_3)$. Mai există o soluție prin care putem evita această
+desfășurare explicită a lui ${\color{DarkOrchid}P(B)}$ în funcție de
+cauzele lui (evenimentele ce condiționează pe) $B$: calculăm $P(\neg
+A_1 | B)$.
+
+Urmând aceiași pași ca mai devreme, calculăm:
+
+\begin{eqnarray*}
+  P(\neg A_1 | B)   & = & \Bigg(P(B \vert \neg A_1, A_2, A_3) \cdot P(A_2) \cdot P(A_3) + \\
+  &  & P(B \vert \neg A_1, A_2, \neg A_3) \cdot P(A_2) \cdot P(\neg A_3) + \\
+  &  & P(B \vert \neg A_1, \neg A_2, A_3) \cdot P(\neg A_2) \cdot P(A_3) + \\
+  &  & P(B \vert \neg A_1, \neg A_2, \neg A_3) \cdot P(\neg A_2) \cdot P(\neg A_3)\Bigg) \cdot \dfrac{P(\neg A_1)}{{\color{DarkOrchid}P(B)}}
+\end{eqnarray*}
+
+Știind că $P(A_1 \vert B) + P(\neg A_1 \vert B) = 1$, obținem un
+sistem de ecuații pe care îl putem rezolva fără a mai calcula
+${\color{DarkOrchid}P(B)}$.
+
+\subsection{$N$ cauze}
+\label{sec:n_causes}
+
+Dacă am avea nu 3, ci $N$ evenimente $A_i$ ce condiționează
+evenimentul $B$:
+
+\begin{eqnarray*}
+  P(A_i \vert B) & = &\dfrac{P(B \vert A_i) \cdot P(A_i)}{P(B)} \\
+  & = & \dfrac{\Big(\displaystyle\sum P(B \vert A_1, \ldots, A_N) \cdot P(A_1)\cdot \ldots \cdot P(A_{i-1}) \cdot P(A_{i+1}) \cdot \ldots \cdot P(A_N) \Big) \cdot P(A_i)}{P(B)}
+\end{eqnarray*}
 
 \end{document}
