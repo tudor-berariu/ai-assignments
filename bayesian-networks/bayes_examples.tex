@@ -6,6 +6,8 @@
 \usepackage{import}
 \usepackage[utf8x]{inputenc}
 \usepackage{multicol}
+\usepackage{amsmath}
+%%\usepackage{showlabels}
 
 \title{Inferențe în Rețele Bayesiene}
 \author{Tudor Berariu \\ \emph{tudor.berariu@gmail.com}}
@@ -20,9 +22,9 @@
 \subsubsection*{Trei cauze}
 \label{sec:trei}
 
-Fie rețeaua bayesiană din Figura~\ref{fig:bayes1}. Aceasta este
+Fie rețeaua bayesiană din figura de mai jos. Aceasta este
 descrisă de următorii parametri:
-\begin{multicol}{2}
+\begin{multicols}{2}
   \begin{eqnarray*}
     & & P(A_1) \\
     & & P(A_2) \\
@@ -33,16 +35,48 @@ descrisă de următorii parametri:
     & & \ldots \\
     & & P(B \vert \neg A_1, \neg A_2, \neg A_3)
   \end{eqnarray*}
-  \begin{figure}[h]
-    \centering
-    \def\svgwidth{8cm}
-    \import{graphics/}{bayes1.pdf_tex}
-    \caption{Rețea Bayesiană}
-    \label{fig:bayes1}
-  \end{figure}
-\end{multicol}
+  \vfill
+  \def\svgwidth{6cm}
+  \import{graphics/}{bayes1.pdf_tex}
+\end{multicols}
 
+\paragraph{Problema}
 
+Să prespupunem că dorim să calculăm $P(A_1 \vert B)$.
+
+Conform Teoremei lui Bayes:
+\begin{equation}
+  \label{eq:1}
+  P(A_1 \vert B) = \dfrac{P(B \vert A_1) \cdot P(A_1)}{P(B)}
+\end{equation}
+În Ecuația~\ref{eq:1} avem două cantități necunoscute: $P(B \vert
+A_1)$ și $P(B)$.
+
+Aplicând formula probailităților totale:
+\begin{equation}
+  \label{eq:2}
+  P(B \vert A_1) = P(B \vert A_1, A_2) \cdot P(A_2 \vert A_1) + P(B \vert A_1, \neg A_2) \cdot P(\neg A_2 \vert A_1)
+\end{equation}
+
+Dar, cum [fără a fi $B$ observat] $A_1$ și $A_2$ sunt condițional
+independente, $P(A_2 \vert A_1) = P(A_2)$ și $P(\neg A_2 \vert A_1) =
+P(\neg A_2)$, iar Ecuația\ref{eq:2} devine:
+\begin{equation}
+  \label{eq:3}
+  P(B \vert A_1) = P(B \vert A_1, A_2) \cdot P(A_2) + P(B \vert A_1, \neg A_2) \cdot P(\neg A_2)
+\end{equation}
+
+Aplicând din nou formula probabilităților totale pentru a factoriza după $A_3$:
+
+\begin{eqnarray*}
+  \label{eq:4}
+  P(B \vert A_1) & = & P(B \vert A_1, A_2) \cdot P(A_2) + P(B \vert A_1, \neg A_2) \cdot P(\neg A_2) \\
+  P(B \vert A_1) & = & \big( P(B \vert A_1, A_2, A_3) \cdot P(A_3 \vert A_1, A_2) + \\
+  & & 
+  \quad P(B \vert A_1, A_2, \neg A_3) \cdot P(\neg A_3 \vert A_1, A_2) \big) \cdot P(A_2) + \\
+  &  & \big( P(B \vert A_1, \neg A_2, A_3) \cdot P(A_3 \vert A_1, \neg A_2) + \\
+  & & \quad P(B \vert A_1, \neg A_2, \neg A_3) \cdot P(\neg A_3 \vert A_1, \neg A_2) \big) \cdot P(\neg A_2)
+\end{eqnarray*}
 
 \subsubsection*{$N$ cauze}
 \label{sec:n}
