@@ -1,0 +1,52 @@
+\documentclass[12pt]{article}
+
+\usepackage{xcolor}
+\usepackage[romanian]{babel}
+\usepackage{graphicx}
+\usepackage{import}
+\usepackage[utf8x]{inputenc}
+\usepackage{multicol}
+
+\title{Inferențe în Rețele Bayesiene}
+\author{Tudor Berariu \\ \emph{tudor.berariu@gmail.com}}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{1. Mai multe cauze ale aceluiași eveniment}
+\label{mc}
+
+\subsubsection*{Trei cauze}
+\label{sec:trei}
+
+Fie rețeaua bayesiană din Figura~\ref{fig:bayes1}. Aceasta este
+descrisă de următorii parametri:
+\begin{multicol}{2}
+  \begin{eqnarray*}
+    & & P(A_1) \\
+    & & P(A_2) \\
+    & & P(A_3) \\
+    & & P(B \vert A_1, A_2, A_3) \\
+    & & P(B \vert A_1, A_2, \neg A_3) \\
+    & & P(B \vert A_1, \neg A_2, A_3) \\
+    & & \ldots \\
+    & & P(B \vert \neg A_1, \neg A_2, \neg A_3)
+  \end{eqnarray*}
+  \begin{figure}[h]
+    \centering
+    \def\svgwidth{8cm}
+    \import{graphics/}{bayes1.pdf_tex}
+    \caption{Rețea Bayesiană}
+    \label{fig:bayes1}
+  \end{figure}
+\end{multicol}
+
+
+
+\subsubsection*{$N$ cauze}
+\label{sec:n}
+
+
+
+\end{document}
